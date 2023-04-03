@@ -1,7 +1,7 @@
 const filmsList = document.querySelector('#films');
 const movieDetails = document.querySelector('#movie-details');
 
-fetch('')
+fetch('http://localhost:3000/films')
   .then(response => response.json())
   .then(data => {
     // Retrieve the necessary information for the first movie
@@ -34,6 +34,23 @@ fetch('')
     filmsList.appendChild(movieItem);
   })
   .catch(error => console.log(error));
+
+  fetch('http://localhost:3000/films/' + filmId)
+  .then(response => response.json())
+  .then(movie => {
+    const main = document.getElementById('main');
+    main.innerHTML = `
+      <h2>${movie.title}</h2>
+      <img src="${movie.poster}" alt="${movie.title} poster" style="max-width: 300px;">
+      <p><strong>Description:</strong> ${movie.description}</p>
+      <p><strong>Showtime:</strong> ${movie.showtime}</p>
+      <p><strong>Tickets Sold:</strong> ${movie.tickets_sold}</p>
+      <p><strong>Capacity:</strong> ${movie.capacity}</p>
+      <p><strong>Runtime:</strong> ${movie.runtime} min</p>
+      <p><strong>Available Tickets:</strong> ${movie.capacity - movie.tickets_sold}</p>
+       `;
+  })
+  .catch(error => console.error(error))
 
    //calculate the of tickets available by subtracting the tickets sold from the capacity
    const capacity = 100; // assume a capacity of 100 seats
